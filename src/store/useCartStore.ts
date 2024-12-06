@@ -6,6 +6,7 @@ interface CartItem {
   id: number;
   nombre: string;
   precioVenta: number;
+  precioCompra: number;
   imagen: string;
   quantity: number;
   discount: number;
@@ -20,6 +21,7 @@ interface CartActions {
   removeItem: (productId: number) => void;
   updateQuantity: (productId: number, quantity: number) => void;
   applyDiscount: (productId: number) => void;
+  resetDiscount: (productId: number) => void;
   total: () => number;
 }
 
@@ -29,8 +31,9 @@ const mapProductToCartItem = (product: Product): CartItem => {
   return {
     id: product.id,
     nombre: product.attributes.nombre,
-    precioVenta: product.attributes.precioVenta,
-    imagen: product.attributes.imagen[0]?.children?.find(child => child.url)?.url || '',
+    precioVenta: Number(product.attributes.precioVenta) || 0,
+    precioCompra: Number(product.attributes.precioCompra) || 0,
+    imagen: product.attributes.imagen?.[0]?.children?.find(child => child.url)?.url || '',
     quantity: 1,
     discount: 0,
   };
@@ -78,10 +81,35 @@ export const useCartStore = create<CartStore>()(
       },
 
       applyDiscount: (productId) => {
+        set((state) => {
+          const updatedItems = state.items.map(item => {
+            if (item.id === productId) {
+              const currentDiscount = item.discount || 0;
+              const precioVenta = Number(item.precioVenta) || 0;
+              const precioCompra = Number(item.precioCompra) || 0;
+              
+              const newDiscount = currentDiscount + 10;
+              const finalPrice = precioVenta - newDiscount;
+              
+              if (finalPrice > 0) {
+                return {
+                  ...item,
+                  discount: newDiscount
+                };
+              }
+            }
+            return item;
+          });
+          
+          return { items: updatedItems };
+        });
+      },
+
+      resetDiscount: (productId) => {
         set((state) => ({
           items: state.items.map(item =>
             item.id === productId
-              ? { ...item, discount: item.discount + 10 }
+              ? { ...item, discount: 0 }
               : item
           ),
         }));

@@ -6,7 +6,7 @@ import { CheckoutForm } from '../components/CheckoutForm';
 import { QuantityControls } from '../components/QuantityControls';
 
 export const Cart: React.FC = () => {
-  const { items, removeItem, updateQuantity, total, applyDiscount } = useCartStore();
+  const { items, removeItem, updateQuantity, total, applyDiscount, resetDiscount } = useCartStore();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
@@ -128,12 +128,20 @@ export const Cart: React.FC = () => {
                       onDecrease={() => updateQuantity(item.id, item.quantity - 1)}
                       onRemove={() => removeItem(item.id)}
                     />
-                    <button
-                      onClick={() => applyDiscount(item.id)}
-                      className="w-full px-6 py-2 text-base bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-                    >
-                      Aplicar -$10
-                    </button>
+                    <div className="flex gap-2 w-full">
+                      <button
+                        onClick={() => applyDiscount(item.id)}
+                        className="flex-1 px-4 py-2 text-base bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                      >
+                        -$10
+                      </button>
+                      <button
+                        onClick={() => resetDiscount(item.id)}
+                        className="flex-1 px-4 py-2 text-base bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                      >
+                        Resetear
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

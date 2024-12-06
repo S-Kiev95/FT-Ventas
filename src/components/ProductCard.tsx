@@ -12,8 +12,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const navigate = useNavigate();
   const addItem = useCartStore((state) => state.addItem);
   
-  const imageUrl = product.attributes.imagen[0]?.children?.find(child => child.url)?.url || '';
-  const price = parseFloat(product.attributes.precioVenta) || 0;
+  const imageUrl = product.attributes.imagen?.[0]?.children?.find(child => child.url)?.url || '';
+  const price = product.attributes.precioVenta || 0;
+  const description = product.attributes.descripcion?.[0]?.children?.[0]?.text || 'Sin descripción';
   
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-all hover:shadow-lg">
@@ -26,9 +27,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         />
       </div>
       <div className="p-4">
-        <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2 h-14 line-clamp-2">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1 line-clamp-2">
           {product.attributes.nombre}
         </h3>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 line-clamp-2">
+          {description}
+        </p>
         <div className="flex justify-between items-center mb-4">
           <p className="text-xl font-bold text-gray-900 dark:text-white">
             ${price.toFixed(2)}
