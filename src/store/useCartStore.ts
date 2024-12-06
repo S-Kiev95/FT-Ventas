@@ -22,6 +22,7 @@ interface CartActions {
   updateQuantity: (productId: number, quantity: number) => void;
   applyDiscount: (productId: number) => void;
   resetDiscount: (productId: number) => void;
+  clearCart: () => void;
   total: () => number;
 }
 
@@ -113,6 +114,10 @@ export const useCartStore = create<CartStore>()(
               : item
           ),
         }));
+      },
+
+      clearCart: () => {
+        set({ items: [] });
       },
 
       total: () => {

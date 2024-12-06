@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Trash2 } from 'lucide-react';
 import { useCartStore } from '../store/useCartStore';
 import { CheckoutForm } from '../components/CheckoutForm';
 import { QuantityControls } from '../components/QuantityControls';
 
 export const Cart: React.FC = () => {
-  const { items, removeItem, updateQuantity, total, applyDiscount, resetDiscount } = useCartStore();
+  const { items, removeItem, updateQuantity, total, applyDiscount, resetDiscount, clearCart } = useCartStore();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
@@ -71,6 +71,14 @@ export const Cart: React.FC = () => {
         Seguir comprando
       </Link>
 
+      <button
+        onClick={clearCart}
+        className="px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2 mb-6"
+      >
+        <Trash2 size={16} />
+        Vaciar carrito
+      </button>
+
       {error && (
         <div className="mb-4 p-4 bg-red-100 dark:bg-red-900 border border-red-400 text-red-700 dark:text-red-300 rounded">
           {error}
@@ -78,7 +86,7 @@ export const Cart: React.FC = () => {
       )}
 
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-6">
-        <h1 className="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-white">Tu Carrito</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-white">Detalle del Carrito</h1>
         
         <div className="space-y-6">
           {items.map((item) => {
