@@ -8,6 +8,9 @@ import { useCartStore } from './store/useCartStore';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { ThemeToggle } from './components/ThemeToggle';
 
+// Puedes reemplazar esta URL con la que prefieras
+const LOGO_URL = "https://cdn.pixabay.com/photo/2017/01/31/23/42/animal-2028258_640.png";
+
 function App() {
   const items = useCartStore((state) => state.items);
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
@@ -17,10 +20,17 @@ function App() {
       <Router>
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors">
           <nav className="bg-white dark:bg-gray-800 shadow-md">
-            <div className="container mx-auto px-4 py-4">
+            <div className="container mx-auto px-4 py-3">
               <div className="flex justify-between items-center">
-                <Link to="/" className="text-xl font-bold text-gray-800 dark:text-white">
-                  Mi Tienda
+                <Link to="/" className="flex items-center gap-2">
+                  <img 
+                    src={LOGO_URL}
+                    alt="Mi Tienda Logo" 
+                    className="h-8 w-auto object-contain"
+                  />
+                  <span className="text-lg font-semibold text-gray-800 dark:text-white">
+                    Tienda
+                  </span>
                 </Link>
                 <div className="flex items-center gap-4">
                   <ThemeToggle />
